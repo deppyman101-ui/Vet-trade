@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin.html
 Disallow: /admin-contact.html
 
-Sitemap: https://vetttrade.co.uk/sitemap.xml
+Sitemap: https://www.vetttrade.co.uk/sitemap.xml
