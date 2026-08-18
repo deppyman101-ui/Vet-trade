@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Account | Vett Trade</title>
+<style>
+:root{--ink:#0b1724;--gold:#d4aa4c;--bg:#f4f6f8;--card:#fff;--line:#e2e7eb;--muted:#6d7680;--green:#15785a;--red:#b94747}*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--ink)}button,input{font:inherit}.top{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 4%}.brand{font-weight:900;letter-spacing:1px}.brand span{color:var(--gold)}.top a{color:var(--ink);text-decoration:none;font-weight:800;font-size:13px}.wrap{max-width:620px;margin:0 auto;padding:52px 22px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:0 24px 60px #0001}.eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:900;color:#9b762b}.muted{color:var(--muted);line-height:1.6}h1{margin:6px 0 8px}h2{margin:0 0 8px;font-size:21px}label{display:block;font-size:12px;font-weight:800;margin:14px 0 6px}input{width:100%;padding:12px;border:1px solid #d6dde3;border-radius:8px;background:#fff}.primary{width:100%;border:0;background:var(--ink);color:#fff;font-weight:900;padding:13px 15px;border-radius:8px;cursor:pointer;margin-top:16px}.secondary{border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:800;padding:10px 12px;border-radius:8px;cursor:pointer}.hidden{display:none!important}.notice{margin-top:14px;padding:12px;border-radius:8px;background:#edf8f3;color:#23634d;border:1px solid #cde8dc;line-height:1.5}.error{margin-top:14px;padding:12px;border-radius:8px;background:#fff0f0;color:#8d3939;border:1px solid #eccaca;line-height:1.5}.account{margin-top:20px;padding:16px;border:1px solid var(--line);border-radius:12px;background:#fafbfc}.current{font-weight:900;margin-top:4px;word-break:break-word}.actions{display:flex;gap:9px;margin-top:18px;flex-wrap:wrap}@media(max-width:560px){.wrap{padding:30px 16px}.card{padding:22px}.top{padding:0 16px}}
+</style>
+</head>
+<body>
+<div class="top"><div class="brand">VETT <span>TRADE</span> · ADMIN</div><a href="/admin.html">← Control Room</a></div>
+<main class="wrap">
+<div class="card">
+<div class="eyebrow">Admin account</div>
+<h1>Vett Trade login settings</h1>
+<p class="muted">Sign in with your current Vett Trade admin account, then change the email used to access the Control Room.</p>
+<div id="loginBox">
+<form id="loginForm">
+<label>CURRENT ADMIN EMAIL</label><input id="loginEmail" type="email" value="deppyman101@gmail.com" required>
+<label>PASSWORD</label><input id="loginPassword" type="password" required>
+<button class="primary">SIGN IN</button>
+</form>
+<div id="loginMsg"></div>
+</div>
+<div id="settingsBox" class="hidden">
+<div class="account"><span class="muted">Currently signed in as</span><div id="currentEmail" class="current">—</div></div>
+<form id="emailForm">
+<label>NEW ADMIN LOGIN EMAIL</label><input id="newEmail" type="email" value="admin@vetttrade.co.uk" required>
+<button class="primary">CHANGE ADMIN EMAIL</button>
+</form>
+<div id="emailMsg"></div>
+<div class="actions"><button class="secondary" onclick="location.href='/admin.html'">Back to Control Room</button><button class="secondary" onclick="signOut()">Sign out</button></div>
+</div>
+</div>
+</main>
+<script>
+const SUPA_URL='https://iymhyxheggqsewpczgjl.supabase.co';
+const SUPA_KEY='sb_publishable_Q8yb_Mw70jDkwld8YGQRRw_h-T5Rau2';
+let session=JSON.parse(localStorage.getItem('vt_session')||'null');
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+async function api(path,opts={}){const headers={'apikey':SUPA_KEY,'Content-Type':'application/json',...(opts.headers||{})};if(session?.access_token)headers.Authorization='Bearer '+session.access_token;const r=await fetch(SUPA_URL+path,{...opts,headers});const txt=await r.text();let d=null;try{d=txt?JSON.parse(txt):null}catch{d=txt}if(!r.ok)throw new Error(d?.message||d?.error_description||d?.error||'Request failed');return d}
+async function verifyAdmin(){if(!session?.access_token)return false;const ok=await api('/rest/v1/rpc/is_vett_admin',{method:'POST',body:'{}'});if(!ok)throw new Error('This account does not have Vett Trade admin access.');document.getElementById('loginBox').classList.add('hidden');document.getElementById('settingsBox').classList.remove('hidden');document.getElementById('currentEmail').textContent=session.user?.email||'Admin account';return true}
+async function signIn(email,password){const d=await api('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});session={access_token:d.access_token,refresh_token:d.refresh_token,user:d.user};localStorage.setItem('vt_session',JSON.stringify(session));await verifyAdmin()}
+function signOut(){localStorage.removeItem('vt_session');session=null;location.reload()}
+document.getElementById('loginForm').onsubmit=async e=>{e.preventDefault();const m=document.getElementById('loginMsg');m.innerHTML='';try{await signIn(document.getElementById('loginEmail').value.trim(),document.getElementById('loginPassword').value)}catch(err){m.innerHTML='<div class="error">'+esc(err.message)+'</div>'}};
+document.getElementById('emailForm').onsubmit=async e=>{e.preventDefault();const m=document.getElementById('emailMsg'),btn=e.target.querySelector('button');m.innerHTML='';btn.disabled=true;const old=btn.textContent;btn.textContent='SENDING CONFIRMATION...';try{const newEmail=document.getElementById('newEmail').value.trim().toLowerCase();if(newEmail===String(session?.user?.email||'').toLowerCase())throw new Error('That is already your admin login email.');await api('/auth/v1/user',{method:'PUT',body:JSON.stringify({email:newEmail})});m.innerHTML='<div class="notice"><b>Email change requested.</b><br>Check <b>'+esc(newEmail)+'</b> for the Supabase confirmation email. Depending on the project security setting, Supabase may also ask you to confirm the change from your current email. Your admin permissions stay attached to the same account.</div>'}catch(err){m.innerHTML='<div class="error">'+esc(err.message)+'</div>'}finally{btn.disabled=false;btn.textContent=old}};
+(async()=>{if(session?.access_token){try{await verifyAdmin()}catch{localStorage.removeItem('vt_session');session=null}}})();
+</script>
+</body>
+</html>
