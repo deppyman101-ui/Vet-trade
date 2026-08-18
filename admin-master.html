@@ -4,19 +4,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Vett Trade Admin</title>
-  <meta http-equiv="refresh" content="0; url=/admin.html">
-  <script>window.location.replace('/admin.html');</script>
   <style>
     body{margin:0;font-family:Inter,Arial,sans-serif;background:#f4f6f8;color:#0b1724;display:grid;place-items:center;min-height:100vh}
-    .card{background:#fff;border:1px solid #e2e7eb;border-radius:16px;padding:28px;max-width:520px;text-align:center;box-shadow:0 24px 60px #0001}
-    a{color:#0b1724;font-weight:800}
+    .card{background:#fff;border:1px solid #e2e7eb;border-radius:16px;padding:28px;max-width:620px;width:calc(100% - 40px);box-shadow:0 24px 60px #0001}
+    .eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:900;color:#9b762b}.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}.btn{display:block;text-decoration:none;text-align:center;padding:14px 16px;border-radius:9px;font-weight:900}.primary{background:#0b1724;color:#fff}.secondary{background:#fff;color:#0b1724;border:1px solid #e2e7eb}.muted{color:#6d7680;line-height:1.6}@media(max-width:560px){.actions{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <div class="card">
+    <div class="eyebrow">Operator access</div>
     <h1>Vett Trade Admin</h1>
-    <p>Opening the Vett Trade Control Room…</p>
-    <p><a href="/admin.html">Open admin dashboard</a></p>
+    <p class="muted">Open the main control room or create a new job while speaking to a customer on the phone.</p>
+    <div class="actions">
+      <a class="btn primary" href="/admin.html">OPEN DASHBOARD</a>
+      <a class="btn secondary" href="/admin-create-job.html">CREATE PHONE JOB</a>
+    </div>
   </div>
 </body>
 </html>
