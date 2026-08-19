@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Join Vett Trade | Plumbing Professionals</title>
+<meta name="description" content="Apply to join Vett Trade and receive matched plumbing opportunities across South East London and Kent.">
+<link rel="canonical" href="https://www.vetttrade.co.uk/join.html">
+<style>
+:root{--ink:#0b1724;--gold:#d4aa4c;--paper:#fbfaf7;--line:#e7e5df;--muted:#6f7882;--green:#16815d}*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;color:var(--ink);background:var(--paper)}a{color:inherit}.top{height:74px;padding:0 6%;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--line)}.logo{font-size:22px;font-weight:900;letter-spacing:1px;text-decoration:none}.logo i{font-style:normal;color:var(--gold)}.back{font-size:13px;font-weight:800;text-decoration:none}.hero{min-height:calc(100vh - 74px);display:grid;grid-template-columns:1fr 480px;gap:64px;align-items:center;padding:58px 7%;background:linear-gradient(115deg,#0b1724 0%,#10283e 64%,#17344c 100%);color:#fff}.eyebrow{color:#e4c470;text-transform:uppercase;font-size:12px;letter-spacing:2.2px;font-weight:800}.hero h1{font-size:52px;line-height:1.04;letter-spacing:-1.7px;margin:14px 0 18px}.heroText{font-size:18px;line-height:1.65;color:#d7e0e8;max-width:620px}.points{display:grid;gap:13px;margin-top:28px}.point{display:flex;gap:11px;align-items:flex-start;font-size:14px;color:#e7edf2}.tick{color:#e4c470;font-weight:900}.launch{display:inline-block;margin-top:26px;padding:10px 13px;border:1px solid #d4aa4c66;border-radius:999px;background:#d4aa4c18;color:#f0d58e;font-size:12px;font-weight:900}.card{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:30px;box-shadow:0 25px 60px #0003}.card h2{margin:7px 0 8px;font-size:28px}.lead{color:var(--muted);line-height:1.55;font-size:14px}label{font-size:12px;font-weight:900;display:block;margin:16px 0 7px}input{width:100%;padding:13px;border:1px solid #d8dde1;border-radius:9px;background:#fff;font:inherit}.submit{width:100%;margin-top:18px;padding:14px;border:0;border-radius:9px;background:var(--ink);color:#fff;font-weight:900;cursor:pointer}.submit:disabled{opacity:.6;cursor:wait}.notice,.message{margin-top:14px;padding:13px;border-radius:9px;font-size:13px;line-height:1.5}.notice{background:#edf8f3;color:#23634d;border:1px solid #cde8dc}.message{background:#f6f8fa;color:var(--ink);border:1px solid #e6eaee}.legal{font-size:11px;line-height:1.55;color:#6a737c;margin-top:12px}.legal a{font-weight:800}.loginLink{margin-top:18px;text-align:center;font-size:13px;color:var(--muted)}.loginLink a{font-weight:900;color:var(--ink)}
+@media(max-width:880px){.hero{grid-template-columns:1fr;gap:34px;padding:45px 6%}.hero h1{font-size:42px}.card{max-width:560px;width:100%;margin:auto}}@media(max-width:520px){.top{padding:0 5%}.hero{padding:36px 5%}.hero h1{font-size:36px}.card{padding:23px}}
+</style>
+</head>
+<body>
+<header class="top"><a class="logo" href="/">VETT <i>TRADE</i></a><a class="back" href="/">← Back to Vett Trade</a></header>
+<main class="hero">
+  <section>
+    <div class="eyebrow">FOR PLUMBING PROFESSIONALS</div>
+    <h1>Join the Vett Trade<br>launch network.</h1>
+    <p class="heroText">Receive plumbing opportunities matched to the areas and work you want. You see the area, job type, urgency and lead fee before deciding whether to accept.</p>
+    <div class="points">
+      <div class="point"><span class="tick">✓</span><span>No obligation to take every opportunity.</span></div>
+      <div class="point"><span class="tick">✓</span><span>Customer contact details stay protected until a lead is accepted and paid.</span></div>
+      <div class="point"><span class="tick">✓</span><span>Independent trades contract directly with the customer.</span></div>
+    </div>
+    <div class="launch">LAUNCH GROUP · NO ONBOARDING FEE</div>
+  </section>
+
+  <section class="card">
+    <div class="eyebrow" style="color:#9b762b">EARLY ACCESS</div>
+    <h2>Create your trade account</h2>
+    <p class="lead">We’re onboarding a limited launch group before customer promotion begins. We expect to introduce an onboarding fee for future applicants.</p>
+    <form id="signupForm">
+      <label>EMAIL</label>
+      <input id="email" type="email" autocomplete="email" required>
+      <label>CREATE PASSWORD</label>
+      <input id="password" type="password" autocomplete="new-password" minlength="8" required>
+      <button class="submit" id="submitBtn">APPLY TO JOIN</button>
+    </form>
+    <div id="message"></div>
+    <p class="legal">By applying, you agree to the <a href="/trade-terms.html">Trade Terms</a> and acknowledge the <a href="/privacy.html">Privacy Notice</a>. Applications are subject to Vett Trade verification.</p>
+    <div class="loginLink">Already registered? <a href="/?payment=login">Trade login →</a></div>
+  </section>
+</main>
+<script>
+const SUPA_URL='https://iymhyxheggqsewpczgjl.supabase.co';
+const SUPA_KEY='sb_publishable_Q8yb_Mw70jDkwld8YGQRRw_h-T5Rau2';
+const form=document.getElementById('signupForm'),message=document.getElementById('message'),btn=document.getElementById('submitBtn');
+form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const old=btn.textContent;
+  btn.disabled=true;btn.textContent='CREATING ACCOUNT...';message.innerHTML='';
+  try{
+    const r=await fetch(SUPA_URL+'/auth/v1/signup',{method:'POST',headers:{'apikey':SUPA_KEY,'Content-Type':'application/json'},body:JSON.stringify({email:document.getElementById('email').value.trim(),password:document.getElementById('password').value,options:{emailRedirectTo:'https://www.vetttrade.co.uk/trade-portal.html'}})});
+    const txt=await r.text();let d={};try{d=txt?JSON.parse(txt):{}}catch{d={}}
+    if(!r.ok)throw new Error(d.msg||d.message||d.error_description||d.error||'Unable to create account');
+    form.reset();
+    message.innerHTML='<div class="notice"><b>Application started.</b><br>Check your email to confirm your account. After confirmation, complete your trade profile so we can review your application.</div>';
+  }catch(err){message.innerHTML='<div class="message">'+String(err.message||'Unable to create account').replace(/[<>&]/g,s=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[s]))+'</div>'}
+  finally{btn.disabled=false;btn.textContent=old}
+});
+</script>
+</body>
+</html>
