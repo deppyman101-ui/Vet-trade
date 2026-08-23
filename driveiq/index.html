@@ -2,77 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<meta name="theme-color" content="#08142d" />
-<title>DRIVEIQ Pilot</title>
-<meta name="description" content="Score delivery offers in seconds. DRIVEIQ pilot." />
-<link rel="stylesheet" href="driveiq-pilot.css">
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@7/dist/tesseract.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.min.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>RouteSignal</title>
+<meta http-equiv="refresh" content="0; url=/routesignal/" />
+<link rel="canonical" href="/routesignal/" />
+<script>location.replace('/routesignal/'+location.search+location.hash);</script>
 </head>
-<body>
-<div id="loading" class="loading hidden"><div class="loadbox"><div class="ring"></div><strong id="loadTitle">Reading your offer…</strong><span id="loadText">OCR runs on your phone. Your screenshot is not uploaded.</span><div class="progress"><i id="progressBar"></i></div></div></div>
-<div id="toast" class="toast hidden"></div>
-
-<div id="loginScreen" class="app loginWrap">
-  <section class="panel login">
-    <div class="brandbox"><div class="mark">IQ</div><div><div class="brand">DRIVE<span>IQ</span></div><div class="sub">LIVE PILOT</div></div></div>
-    <div class="eyebrow" style="margin-top:24px">PRIVATE TEST ACCESS</div>
-    <h1>Know if the job<br/>is worth it.</h1>
-    <p>Enter your pilot access code. Drivers see the scoring app; the admin code opens the live results dashboard.</p>
-    <div class="field" style="margin-top:18px"><span>ACCESS CODE</span><input id="accessCode" autocomplete="one-time-code" autocapitalize="characters" placeholder="DRIVER1-XXXXXX" /></div>
-    <button id="loginBtn" class="cta"><span>ENTER DRIVEIQ</span><strong>→</strong></button>
-    <div class="privacy">Pilot privacy: screenshots are processed on-device and are not stored. Job data and location captured at scoring time are saved for pilot analysis.</div>
-  </section>
-</div>
-
-<div id="driverApp" class="app hidden">
-  <header class="top"><div class="brandbox"><div class="mark">IQ</div><div><div class="brand">DRIVE<span>IQ</span></div><div id="driverLabel" class="sub">PILOT DRIVER</div></div></div><div class="pill">● LIVE PILOT</div></header>
-
-  <main id="scorePage">
-    <section class="panel hero">
-      <div class="eyebrow">DELIVERY DECISION ENGINE</div>
-      <h1>Screenshot it.<br/><span>Score it.</span></h1>
-      <p>Upload the offer you just received. DRIVEIQ reads the key numbers, checks your current location and scores the job against <b>your own earning targets.</b></p>
-      <label class="upload" for="shot"><input id="shot" type="file" accept="image/*"/><div class="scan">▣</div><div><b>Upload latest screenshot</b><small>Uber Eats • Deliveroo • Just Eat</small></div><div class="arrow">→</div></label>
-      <div id="preview" class="preview hidden"><img id="previewImg" alt="Offer screenshot"/></div>
-      <button id="readBtn" class="cta hidden"><span>READ & SCORE JOB</span><strong>→</strong></button>
-      <button id="manualBtn" class="ghost">Enter offer manually</button>
-    </section>
-    <div class="stats3"><div class="state take"><b>TAKE</b><small>hits both targets</small></div><div class="state border"><b>BORDERLINE</b><small>within 15%</small></div><div class="state skip"><b>SKIP</b><small>poor value</small></div></div>
-    <section class="panel section"><div class="eyebrow">RECENT</div><h2>Your last scores</h2><div id="recentList"><div class="helper">No jobs scored yet.</div></div></section>
-  </main>
-
-  <main id="confirmPage" class="hidden">
-    <section class="panel section"><div class="eyebrow">CHECK BEFORE SCORING</div><h2>Did DRIVEIQ read it right?</h2><div id="ocrStatus" class="status">Check the fields below.</div>
-      <div class="form" style="margin-top:14px">
-        <div class="row2"><label class="field"><span>PLATFORM</span><select id="platform"><option>Uber Eats</option><option>Deliveroo</option><option>Just Eat</option><option>Other</option></select></label><label class="field"><span>OFFER PAY (£)</span><input id="pay" type="number" step="0.01" inputmode="decimal"/></label></div>
-        <div class="row2"><label class="field"><span>DISPLAYED DISTANCE (MI)</span><input id="distance" type="number" step="0.1" inputmode="decimal"/></label><label class="field"><span>EST. TIME (MIN)</span><input id="minutes" type="number" step="1" inputmode="numeric"/></label></div>
-        <label class="field"><span>PICKUP / RESTAURANT</span><input id="pickup" placeholder="e.g. McDonald's Catford"/></label>
-        <label class="field"><span>DROP-OFF AREA</span><input id="dropoff" placeholder="e.g. Lewisham"/></label>
-        <label class="field"><span>WHAT DOES THE DISPLAYED DISTANCE COVER?</span><select id="scope"><option value="total">Whole offer / total trip</option><option value="delivery_only">Pickup → customer only</option><option value="unknown">Not sure</option></select></label>
-        <div id="pickupExtra" class="row2 hidden"><label class="field"><span>YOU → PICKUP (MI)</span><input id="pickupMiles" type="number" step="0.1" inputmode="decimal" placeholder="0.0"/></label><label class="field"><span>YOU → PICKUP (MIN)</span><input id="pickupMins" type="number" step="1" inputmode="numeric" placeholder="0"/></label></div>
-        <label class="field"><span><input id="includeWait" type="checkbox" checked style="width:auto;margin-right:7px"/> ADD MY RESTAURANT WAIT BUFFER</span></label>
-        <div id="gpsStatus" class="status">Location will be captured when you score.</div>
-      </div>
-      <button id="scoreBtn" class="cta"><span>SHOW VERDICT</span><strong>→</strong></button><button id="backBtn" class="ghost">Back</button>
-    </section>
-  </main>
-
-  <main id="resultPage" class="hidden"><section id="resultCard" class="panel result"><div class="verdict">DRIVEIQ VERDICT</div><div id="verdictTitle" class="verdictTitle">TAKE</div><div id="verdictSub" class="resultSub"></div><div class="heroMetric"><small>ESTIMATED NET RATE</small><strong id="rate">£0/hr</strong></div><div class="metrics"><div class="metric"><small>NET £/MILE</small><b id="perMile">£0</b></div><div class="metric"><small>EST. NET</small><b id="net">£0</b></div><div class="metric"><small>TOTAL MILES</small><b id="totalMiles">0</b></div></div><div class="reasons"><div class="eyebrow">WHY</div><ul id="reasonList"></ul></div><div class="feedbackButtons"><button data-action="accepted">I ACCEPTED</button><button data-action="skipped">I SKIPPED</button><button data-action="expired">EXPIRED</button></div><button id="againBtn" class="cta"><span>SCORE ANOTHER</span><strong>+</strong></button></section></main>
-
-  <main id="historyPage" class="hidden"><section class="panel section"><div class="eyebrow">PILOT HISTORY</div><h2>Jobs you scored</h2><div id="historyList"></div></section></main>
-  <main id="settingsPage" class="hidden"><section class="panel section"><div class="eyebrow">YOUR RULES</div><h2>What makes a job worth it?</h2><div class="form"><label class="field"><span>VEHICLE</span><select id="vehicle"><option value="car">Car</option><option value="scooter">Scooter / motorbike</option><option value="ebike">E-bike</option><option value="bike">Bicycle</option></select></label><div class="row2"><label class="field"><span>MIN NET £/HOUR</span><input id="hourTarget" type="number" step="0.5"/></label><label class="field"><span>MIN NET £/MILE</span><input id="mileTarget" type="number" step="0.05"/></label></div><div class="row2"><label class="field"><span>RUNNING COST £/MILE</span><input id="costMile" type="number" step="0.01"/></label><label class="field"><span>WAIT BUFFER (MIN)</span><input id="waitBuffer" type="number" step="1"/></label></div></div><button id="saveSettings" class="cta"><span>SAVE TARGETS</span><strong>✓</strong></button><button id="logoutDriver" class="ghost">Sign out</button></section></main>
-  <nav class="nav"><button data-page="score" class="active">SCORE</button><button data-page="history">HISTORY</button><button data-page="settings">SETTINGS</button></nav>
-</div>
-
-<div id="adminApp" class="adminApp hidden">
-  <header class="adminTop"><div class="brandbox"><div class="mark">IQ</div><div><div class="brand">DRIVE<span>IQ</span> ADMIN</div><div class="sub">LIVE PILOT CONTROL</div></div></div><div><button id="refreshAdmin" class="ghost" style="width:auto;padding:0 18px;margin:0">Refresh</button> <button id="logoutAdmin" class="ghost" style="width:auto;padding:0 18px;margin:0">Sign out</button></div></header>
-  <div class="adminGrid"><div class="adminCard"><small>JOBS SCORED</small><strong id="aJobs">0</strong></div><div class="adminCard"><small>TEST DRIVERS</small><strong id="aDrivers">0</strong></div><div class="adminCard"><small>AVG PREDICTED £/HR</small><strong id="aPred">£0</strong></div><div class="adminCard"><small>AVG ACTUAL £/HR</small><strong id="aActual">£0</strong></div><div class="adminCard"><small>TAKE</small><strong id="aTake" style="color:var(--green)">0</strong></div><div class="adminCard"><small>BORDERLINE</small><strong id="aBorder" style="color:var(--amber)">0</strong></div><div class="adminCard"><small>SKIP</small><strong id="aSkip" style="color:var(--red)">0</strong></div><div class="adminCard"><small>AVG TIME ERROR</small><strong id="aError">0m</strong></div></div>
-  <div class="adminWide"><section class="panel section"><div class="eyebrow">LATEST PILOT DATA</div><h2>Scored jobs</h2><div class="adminTableWrap"><table><thead><tr><th>TIME</th><th>DRIVER</th><th>PLATFORM</th><th>OFFER</th><th>MILES</th><th>VERDICT</th><th>PRED £/HR</th><th>ACTUAL</th><th>PICKUP</th></tr></thead><tbody id="adminRows"></tbody></table></div></section><section class="panel section"><div class="eyebrow">INTELLIGENCE</div><h2>Pickup hotspots</h2><div id="hotspots"><div class="helper">Waiting for pilot data.</div></div></section></div>
-</div>
-
-<script src="driveiq-pilot.js"></script>
-<script src="driveiq-completion.js"></script>
+<body style="font-family:system-ui,sans-serif;background:#061026;color:#fff;padding:32px">
+<p>RouteSignal has moved. <a href="/routesignal/" style="color:#6ef6a1">Open RouteSignal</a></p>
 </body>
 </html>
