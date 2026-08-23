@@ -2,6 +2,7 @@
 (() => {
   let completionJob = null;
   let completionShotData = null;
+  let completionCapturedAt = null;
 
   function injectCompletionUI(){
     if(document.getElementById('completePage')) return;
@@ -15,7 +16,7 @@
         <div class="eyebrow">JOB RESULT</div>
         <h2>Job accepted. Finish it, then screenshot it.</h2>
         <div id="completeJobInfo" class="status good">We saved your acceptance time.</div>
-        <p class="helper" style="margin-top:10px">When the delivery is complete, open the completed-order / earnings screen in Uber Eats, Deliveroo or Just Eat and take a screenshot. DRIVEIQ will read the final earnings on this phone. The screenshot is not stored.</p>
+        <p class="helper" style="margin-top:10px">When the delivery is complete, open the completed-order / earnings screen in Uber Eats, Deliveroo or Just Eat and take a screenshot. DRIVEIQ reads the final earnings on this phone. The screenshot is not stored.</p>
         <label class="upload" for="completeShot" style="margin-top:16px">
           <input id="completeShot" type="file" accept="image/*"/>
           <div class="scan">✓</div>
@@ -49,12 +50,16 @@
     document.getElementById('completeShot').onchange=e=>{
       const f=e.target.files?.[0];
       if(!f)return;
+      const start=completionJob?.acceptedAt?new Date(completionJob.acceptedAt).getTime():0;
+      const modified=Number(f.lastModified||0);
+      completionCapturedAt=(Number.isFinite(modified)&&modified>=start-60000&&modified<=Date.now()+300000)?modified:Date.now();
       const r=new FileReader();
       r.onload=()=>{
         completionShotData=r.result;
         document.getElementById('completePreviewImg').src=completionShotData;
         show(document.getElementById('completePreview'));
         show(document.getElementById('readCompleteBtn'));
+        renderCompletionInfo();
       };
       r.readAsDataURL(f);
     };
@@ -63,6 +68,7 @@
     document.getElementById('saveCompleteBtn').onclick=saveCompletionResult;
     document.getElementById('completeLaterBtn').onclick=()=>{
       completionShotData=null;
+      completionCapturedAt=null;
       resetScore();
       switchPage('score');
       toast('Accepted job saved — complete it later from History');
@@ -79,7 +85,8 @@
     if(!completionJob?.acceptedAt)return 1;
     const start=new Date(completionJob.acceptedAt).getTime();
     if(!Number.isFinite(start))return 1;
-    return Math.max(1,Math.round((Date.now()-start)/60000));
+    const end=completionCapturedAt||Date.now();
+    return Math.max(1,Math.round((end-start)/60000));
   }
 
   function renderCompletionInfo(){
@@ -87,13 +94,15 @@
     if(!info||!completionJob)return;
     const accepted=new Date(completionJob.acceptedAt);
     const acceptedText=Number.isNaN(accepted.getTime())?'acceptance time saved':accepted.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-    info.textContent=`${completionJob.platform||'Delivery'} • ${money(completionJob.offer||0)} offer • accepted ${acceptedText}. DRIVEIQ is timing the job automatically.`;
+    const timingText=completionCapturedAt?` Current measured time: ${elapsedMinutes()} min.`:' DRIVEIQ is timing the job automatically.';
+    info.textContent=`${completionJob.platform||'Delivery'} • ${money(completionJob.offer||0)} offer • accepted ${acceptedText}.${timingText}`;
     const mins=document.getElementById('actualMinutes');
     if(mins) mins.value=elapsedMinutes();
   }
 
   function resetCompletionUI(){
     completionShotData=null;
+    completionCapturedAt=null;
     const input=document.getElementById('completeShot'); if(input)input.value='';
     const p=document.getElementById('completePreview'); if(p)hide(p);
     const b=document.getElementById('readCompleteBtn'); if(b)hide(b);
@@ -117,13 +126,11 @@
     const sensibleMax=Math.max(50,offer*3,offer+25);
     const candidates=(labelled.length?labelled:all).filter(x=>x<=sensibleMax);
     let earnings='';
-    if(candidates.length){
-      // On a completed-order screen the final total is usually the largest sensible job-level amount.
-      earnings=Math.max(...candidates);
-    } else if(all.length===1) earnings=all[0];
+    if(candidates.length)earnings=Math.max(...candidates);
+    else if(all.length===1)earnings=all[0];
     const dists=[...lower.matchAll(/([0-9]+(?:\.[0-9]+)?)\s*(?:mi|mile|miles)\b/g)]
       .map(m=>Number(m[1])).filter(x=>x>0&&x<100);
-    return {earnings,distance:dists[0]||'',foundMoney:all.length,raw:clean};
+    return {earnings,distance:dists[0]||'',foundMoney:all.length};
   }
 
   async function readCompletionScreenshot(){
@@ -140,17 +147,17 @@
       if(p.earnings){
         document.getElementById('actualEarnings').value=Number(p.earnings).toFixed(2);
         status.className='status good';
-        status.textContent=`DRIVEIQ found ${money(p.earnings)}. Job time calculated automatically. Check it, then save.`;
+        status.textContent=`DRIVEIQ found ${money(p.earnings)} and measured ${elapsedMinutes()} min. Check it, then save.`;
       }else{
         status.className='status warn';
-        status.textContent='I could not confidently find the final earnings. Enter just the final £ amount below — the job time is already calculated.';
+        status.textContent=`I could not confidently find the final earnings. Enter just the final £ amount below — DRIVEIQ measured ${elapsedMinutes()} min automatically.`;
       }
       show(document.getElementById('completeFields'));
     }catch(e){
       document.getElementById('actualMinutes').value=elapsedMinutes();
       const status=document.getElementById('completeReadStatus');
       status.className='status warn';
-      status.textContent='Screenshot could not be read. Enter only the final earnings — DRIVEIQ has already calculated the job time.';
+      status.textContent=`Screenshot could not be read. Enter only the final earnings — DRIVEIQ measured ${elapsedMinutes()} min automatically.`;
       show(document.getElementById('completeFields'));
     }finally{setLoading(false)}
   }
@@ -192,14 +199,12 @@
     document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
   };
 
-  // Keep the normal navigation, but make sure the transient completion page closes.
   const originalSwitchPage=window.switchPage||switchPage;
   window.switchPage=function(p){
     const complete=document.getElementById('completePage'); if(complete)hide(complete);
     return originalSwitchPage(p);
   };
 
-  // Replace the result feedback behaviour: Accepted now starts the completion flow.
   document.querySelectorAll('.feedbackButtons button').forEach(b=>{
     b.onclick=async()=>{
       if(!currentJob)return;
@@ -211,25 +216,29 @@
           const acceptedAt=j?.feedback?.created_at||new Date().toISOString();
           window.openCompletionForJob(currentJob.id,Number(currentJob.offer_pay||document.getElementById('pay').value||0),acceptedAt,currentJob.platform||document.getElementById('platform').value,currentJob.pickup||document.getElementById('pickup').value);
           toast('Accepted — timer started');
-        }else{
-          toast('Result saved');
-        }
+        }else toast('Result saved');
       }catch(e){toast(e.message)}
     };
   });
 
-  // History now gives accepted jobs one clear completion action instead of four prompts.
   window.renderHistory=function(jobs){
     const html=jobs.length?jobs.map(j=>{
       const f=j.feedback;
       const actual=f?.actual_minutes?` • actual ${f.actual_minutes}m / ${money(f.actual_earnings||0)}`:'';
-      const acceptedAt=f?.created_at||j.created_at;
       const completeButton=f?.driver_action==='accepted'&&!f.actual_minutes
-        ?`<button class="linkbtn" onclick="openCompletionForJob('${j.id}',${Number(j.offer_pay)},'${String(acceptedAt).replace(/'/g,"\\'")}','${escapeHtml(j.platform).replace(/'/g,"\\'")}','${escapeHtml(j.pickup||'').replace(/'/g,"\\'")}')">COMPLETE JOB →</button>`:'';
+        ?`<button class="linkbtn completeJobBtn" data-job-id="${j.id}">COMPLETE JOB →</button>`:'';
       return `<div class="historyItem"><div class="historyMain"><b>${escapeHtml(j.platform)} • ${money(j.offer_pay)} • ${Number(j.total_distance).toFixed(1)}mi</b><small>${escapeHtml(j.pickup||'Pickup not recorded')} • ${new Date(j.created_at).toLocaleString()}${actual}</small>${completeButton}</div><div class="historyRight"><span class="vtag v${j.verdict}">${j.verdict}</span><small style="display:block;color:#788eaf;margin-top:5px">${money(j.net_hourly)}/hr</small></div></div>`;
     }).join(''):'<div class="helper">No jobs scored yet.</div>';
     document.getElementById('historyList').innerHTML=html;
     document.getElementById('recentList').innerHTML=jobs.length?html.split('</div></div>').slice(0,3).join('</div></div>')+'</div></div>':'<div class="helper">No jobs scored yet.</div>';
+    document.querySelectorAll('.completeJobBtn').forEach(btn=>{
+      btn.onclick=()=>{
+        const j=jobs.find(x=>String(x.id)===String(btn.dataset.jobId));
+        if(!j)return;
+        const acceptedAt=j.feedback?.created_at||j.created_at;
+        window.openCompletionForJob(j.id,Number(j.offer_pay),acceptedAt,j.platform,j.pickup||'');
+      };
+    });
   };
 
   injectCompletionUI();
