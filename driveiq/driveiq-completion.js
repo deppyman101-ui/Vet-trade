@@ -244,3 +244,10 @@
   injectCompletionUI();
   if(role==='driver')loadHistory();
 })();
+
+// RouteSignal-only shift/idle intelligence. DRIVEIQ pages remain unchanged.
+if (location.pathname.toLowerCase().includes('/routesignal/')) {
+  const rsIdleScript = document.createElement('script');
+  rsIdleScript.src = '../routesignal/idle-intelligence.js?v=1';
+  document.head.appendChild(rsIdleScript);
+}
