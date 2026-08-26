@@ -1,0 +1,11 @@
+{
+  "name":"VettTrade Trade App",
+  "short_name":"VettTrade",
+  "start_url":"/trade-app.html",
+  "scope":"/",
+  "display":"standalone",
+  "background_color":"#f4f6f8",
+  "theme_color":"#0b1724",
+  "description":"Mobile job app for VettTrade trade partners.",
+  "icons":[{"src":"/trade-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
