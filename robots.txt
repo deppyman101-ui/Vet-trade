@@ -1,6 +1,16 @@
 User-agent: *
 Allow: /
 Disallow: /admin.html
-Disallow: /admin-contact.html
+Disallow: /admin-
+Disallow: /trade-portal.html
+Disallow: /trade-app.html
+Disallow: /trade-job.html
+Disallow: /trade-hub.html
+Disallow: /trade-agreement.html
+Disallow: /customer-portal.html
+Disallow: /customer-status.html
+Disallow: /property-partner-portal.html
+Disallow: /property-partner-agreement.html
+Disallow: /quote.html
 
 Sitemap: https://www.vetttrade.co.uk/sitemap.xml
