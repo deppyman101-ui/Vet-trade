@@ -3,6 +3,18 @@
     {
       "source": "/join",
       "destination": "/join.html"
+    },
+    {
+      "source": "/newaddy",
+      "destination": "/nextkey/index.html"
+    },
+    {
+      "source": "/newaddy/",
+      "destination": "/nextkey/index.html"
+    },
+    {
+      "source": "/newaddy/:path*",
+      "destination": "/nextkey/:path*"
     }
   ]
 }
