@@ -13,6 +13,22 @@
       "destination": "/nextkey/index.html"
     },
     {
+      "source": "/newaddy/admin",
+      "destination": "/nextkey/admin.html"
+    },
+    {
+      "source": "/newaddy/admin/",
+      "destination": "/nextkey/admin.html"
+    },
+    {
+      "source": "/newaddy/payment",
+      "destination": "/nextkey/payment-success.html"
+    },
+    {
+      "source": "/newaddy/payment/",
+      "destination": "/nextkey/payment-success.html"
+    },
+    {
       "source": "/newaddy/:path*",
       "destination": "/nextkey/:path*"
     }
