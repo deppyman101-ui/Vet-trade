@@ -6,19 +6,19 @@
     },
     {
       "source": "/newaddy",
-      "destination": "https://iymhyxheggqsewpczgjl.supabase.co/functions/v1/newaddy-pages?page=public"
+      "destination": "/api/newaddy-page?page=public"
     },
     {
       "source": "/newaddy/",
-      "destination": "https://iymhyxheggqsewpczgjl.supabase.co/functions/v1/newaddy-pages?page=public"
+      "destination": "/api/newaddy-page?page=public"
     },
     {
       "source": "/newaddy/admin",
-      "destination": "https://iymhyxheggqsewpczgjl.supabase.co/functions/v1/newaddy-pages?page=admin"
+      "destination": "/api/newaddy-page?page=admin"
     },
     {
       "source": "/newaddy/admin/",
-      "destination": "https://iymhyxheggqsewpczgjl.supabase.co/functions/v1/newaddy-pages?page=admin"
+      "destination": "/api/newaddy-page?page=admin"
     },
     {
       "source": "/newaddy/payment",
@@ -31,20 +31,6 @@
     {
       "source": "/newaddy/:path*",
       "destination": "/nextkey/:path*"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/newaddy",
-      "headers": [
-        { "key": "x-vercel-enable-rewrite-caching", "value": "0" }
-      ]
-    },
-    {
-      "source": "/newaddy/:path*",
-      "headers": [
-        { "key": "x-vercel-enable-rewrite-caching", "value": "0" }
-      ]
     }
   ]
 }
