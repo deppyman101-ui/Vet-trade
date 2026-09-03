@@ -6,19 +6,39 @@
     },
     {
       "source": "/newaddy",
-      "destination": "/api/newaddy-page-v5?page=public"
+      "destination": "/api/newaddy-page-v6?page=public"
     },
     {
       "source": "/newaddy/",
-      "destination": "/api/newaddy-page-v5?page=public"
+      "destination": "/api/newaddy-page-v6?page=public"
     },
     {
       "source": "/newaddy/admin",
-      "destination": "/api/newaddy-page-v5?page=admin"
+      "destination": "/api/newaddy-page-v6?page=admin"
     },
     {
       "source": "/newaddy/admin/",
-      "destination": "/api/newaddy-page-v5?page=admin"
+      "destination": "/api/newaddy-page-v6?page=admin"
+    },
+    {
+      "source": "/newaddy/terms",
+      "destination": "/api/newaddy-legal?doc=terms"
+    },
+    {
+      "source": "/newaddy/privacy",
+      "destination": "/api/newaddy-legal?doc=privacy"
+    },
+    {
+      "source": "/newaddy/cookies",
+      "destination": "/api/newaddy-legal?doc=cookies"
+    },
+    {
+      "source": "/newaddy/contact",
+      "destination": "/api/newaddy-legal?doc=contact"
+    },
+    {
+      "source": "/newaddy/complaints",
+      "destination": "/api/newaddy-legal?doc=complaints"
     },
     {
       "source": "/newaddy/payment",
