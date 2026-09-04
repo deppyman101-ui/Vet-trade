@@ -6,11 +6,11 @@
     },
     {
       "source": "/newaddy",
-      "destination": "/api/newaddy-page-v6?page=public"
+      "destination": "/api/newaddy-page-v7?page=public"
     },
     {
       "source": "/newaddy/",
-      "destination": "/api/newaddy-page-v6?page=public"
+      "destination": "/api/newaddy-page-v7?page=public"
     },
     {
       "source": "/newaddy/admin",
