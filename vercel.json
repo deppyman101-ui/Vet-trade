@@ -6,39 +6,39 @@
     },
     {
       "source": "/newaddy",
-      "destination": "/api/newaddy-page-v8?page=public"
+      "destination": "/api/newaddy-page-v9?page=public"
     },
     {
       "source": "/newaddy/",
-      "destination": "/api/newaddy-page-v8?page=public"
+      "destination": "/api/newaddy-page-v9?page=public"
     },
     {
       "source": "/newaddy/admin",
-      "destination": "/api/newaddy-page-v8?page=admin"
+      "destination": "/api/newaddy-page-v9?page=admin"
     },
     {
       "source": "/newaddy/admin/",
-      "destination": "/api/newaddy-page-v8?page=admin"
+      "destination": "/api/newaddy-page-v9?page=admin"
     },
     {
       "source": "/newaddy/terms",
-      "destination": "/api/newaddy-legal?doc=terms"
+      "destination": "/api/newaddy-legal-v2?doc=terms"
     },
     {
       "source": "/newaddy/privacy",
-      "destination": "/api/newaddy-legal?doc=privacy"
+      "destination": "/api/newaddy-legal-v2?doc=privacy"
     },
     {
       "source": "/newaddy/cookies",
-      "destination": "/api/newaddy-legal?doc=cookies"
+      "destination": "/api/newaddy-legal-v2?doc=cookies"
     },
     {
       "source": "/newaddy/contact",
-      "destination": "/api/newaddy-legal?doc=contact"
+      "destination": "/api/newaddy-legal-v2?doc=contact"
     },
     {
       "source": "/newaddy/complaints",
-      "destination": "/api/newaddy-legal?doc=complaints"
+      "destination": "/api/newaddy-legal-v2?doc=complaints"
     },
     {
       "source": "/newaddy/payment",
