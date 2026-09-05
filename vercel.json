@@ -6,19 +6,19 @@
     },
     {
       "source": "/newaddy",
-      "destination": "/api/newaddy-page-v9?page=public"
+      "destination": "/api/newaddy-page-v10?page=public"
     },
     {
       "source": "/newaddy/",
-      "destination": "/api/newaddy-page-v9?page=public"
+      "destination": "/api/newaddy-page-v10?page=public"
     },
     {
       "source": "/newaddy/admin",
-      "destination": "/api/newaddy-page-v9?page=admin"
+      "destination": "/api/newaddy-page-v10?page=admin"
     },
     {
       "source": "/newaddy/admin/",
-      "destination": "/api/newaddy-page-v9?page=admin"
+      "destination": "/api/newaddy-page-v10?page=admin"
     },
     {
       "source": "/newaddy/terms",
