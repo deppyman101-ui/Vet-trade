@@ -105,7 +105,10 @@ module.exports = async function handler(req, res) {
         .replace("<strong>NewAddy pilot terms:</strong> listing and receiving interest are free. If a renter first introduced through NewAddy becomes the tenant for this property within 90 days, a £79 successful-introduction fee is payable by the landlord/property provider. The fee must not be passed to the tenant.", "<strong>NewAddy marketplace terms:</strong> standard property listing is free. Featured and Fast-Track are optional paid visibility upgrades. NewAddy does not take a successful-let fee, rent or tenancy commission.")
         .replace("I accept the £79 successful-let fee and 90-day introduction protection.", "I confirm I am authorised to advertise this property and accept the NewAddy marketplace terms.")
         .replace("Private-home landlords pay £79 only after a successful NewAddy introduction becomes the tenant. Room hosts can use a free listing or buy optional Featured and Fast-Track upgrades. House swaps are free.", "Property and room listers can use free listings or buy optional Featured and Fast-Track visibility upgrades. NewAddy may also sell clearly labelled sponsored advertising. Renters and house swaps remain free.")
-        .replace(/Property photos — max 3, JPG\/PNG\/WEBP, 1\.5MB each/g, "Property photos — add as many as you need, JPG/PNG/WEBP, 1.5MB each");
+        .replace(/Property photos — max 3, JPG\/PNG\/WEBP, 1\.5MB each/g, "Property photos — add as many as you need, JPG/PNG/WEBP, 1.5MB each")
+        .replace(/Add up to 3 photos; your phone number and email stay private until you receive an enquiry\./g, "Add as many property photos as you need; your phone number and email stay private until you receive an enquiry.")
+        .replace(/South-East London pilot/g, "UK early access")
+        .replace(/South-East London/g, "the UK");
 
       if (req.query.page === 'public') {
         body = body.replace(/<section class=\"section soft\" id=\"areas\">[\s\S]*?<\/section>\s*<section class=\"section\" id=\"homes\">/, '<section class=\"section\" id=\"homes\">');
