@@ -19,6 +19,35 @@ const retiredAdminActions = `
 })();
 </script>`;
 
+const publicCtas = `
+<style>
+.naQuickRoutes{background:#fff;padding:26px 0 8px}
+.naQuickRoutesInner{max-width:1180px;margin:auto;padding:0 24px}
+.naQuickRoutes h2{font-family:Georgia,"Times New Roman",serif;color:#17324d;font-size:32px;margin:0 0 15px;text-align:center}
+.naRouteGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.naRouteCard{border:1px solid #e4e1dc;border-radius:17px;padding:18px;background:#fff;box-shadow:0 9px 24px rgba(23,50,77,.06);display:flex;flex-direction:column;gap:9px;align-items:flex-start;text-align:left;cursor:pointer;transition:.18s}
+.naRouteCard:hover{transform:translateY(-2px);box-shadow:0 13px 30px rgba(23,50,77,.11)}
+.naRouteIcon{font-size:25px}.naRouteCard strong{font-size:16px;color:#17324d}.naRouteCard span{font-size:12px;line-height:1.5;color:#66727d}.naRouteGo{margin-top:auto;font-size:11px!important;color:#ef6c57!important;font-weight:900;text-transform:uppercase;letter-spacing:.5px}
+@media(max-width:900px){.naRouteGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.naQuickRoutes{padding-top:18px}.naQuickRoutes h2{font-size:28px}.naRouteGrid{grid-template-columns:1fr 1fr}.naRouteCard{padding:15px}.naRouteCard span{font-size:11px}}
+</style>
+<section class="naQuickRoutes" id="quickRoutes"><div class="naQuickRoutesInner"><h2>What are you here for?</h2><div class="naRouteGrid">
+<button class="naRouteCard" id="naCtaLandlord" type="button"><span class="naRouteIcon">🏠</span><strong>Landlord or agent</strong><span>List a studio, 1-bed or 2-bed property free.</span><span class="naRouteGo">List a property →</span></button>
+<button class="naRouteCard" id="naCtaPrivate" type="button"><span class="naRouteIcon">🔑</span><strong>Looking for a private rental</strong><span>Register for studios, 1-bed and 2-bed homes.</span><span class="naRouteGo">Register free →</span></button>
+<button class="naRouteCard" id="naCtaRoom" type="button"><span class="naRouteIcon">🛏️</span><strong>Looking for a room</strong><span>Find room listings and register what you need.</span><span class="naRouteGo">Find a room →</span></button>
+<button class="naRouteCard" id="naCtaSwap" type="button"><span class="naRouteIcon">🔄</span><strong>House swap</strong><span>Register your current home and what you want to swap for.</span><span class="naRouteGo">Register a swap →</span></button>
+</div></div></section>
+<script>
+(function(){
+ if(window.__newAddyQuickRoutesV12)return;window.__newAddyQuickRoutesV12=true;
+ function goTenant(type){if(typeof showTab==='function')showTab('tenantBox');var sel=document.getElementById('tenantType');if(sel&&type)sel.value=type;var box=document.getElementById('tenantBox')||document.getElementById('tenant');if(box)box.scrollIntoView({behavior:'smooth',block:'start'});}
+ var landlord=document.getElementById('naCtaLandlord');if(landlord)landlord.onclick=function(){if(typeof showTab==='function')showTab('landlordBox');var box=document.getElementById('landlordBox');if(box)box.scrollIntoView({behavior:'smooth',block:'start'});};
+ var privateBtn=document.getElementById('naCtaPrivate');if(privateBtn)privateBtn.onclick=function(){goTenant('');};
+ var roomBtn=document.getElementById('naCtaRoom');if(roomBtn)roomBtn.onclick=function(){goTenant('Room / bedsit');};
+ var swapBtn=document.getElementById('naCtaSwap');if(swapBtn)swapBtn.onclick=function(){var box=document.getElementById('swapBox');if(box&&box.classList.contains('hide'))box.classList.remove('hide');var target=box||document.getElementById('swaps');if(target)target.scrollIntoView({behavior:'smooth',block:'start'});};
+})();
+</script>`;
+
 const propertyPhotoGallery = `
 <style>
 .naPropertyThumbs{display:flex;gap:7px;padding:9px;background:#f7f9fa;border-top:1px solid #e4e9ec;overflow-x:auto}
@@ -80,6 +109,7 @@ module.exports = async function handler(req, res) {
 
       if (req.query.page === 'public') {
         body = body.replace(/<section class=\"section soft\" id=\"areas\">[\s\S]*?<\/section>\s*<section class=\"section\" id=\"homes\">/, '<section class=\"section\" id=\"homes\">');
+        if (!body.includes('__newAddyQuickRoutesV12')) body = body.replace('<section class="section" id="homes">', publicCtas + '\n<section class="section" id="homes">');
         if (!body.includes('__newAddyPropertyPhotoGalleryV11')) body = body.replace('</body>', propertyPhotoGallery + '\n</body>');
       }
 
