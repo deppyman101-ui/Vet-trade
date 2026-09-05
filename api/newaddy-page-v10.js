@@ -31,6 +31,10 @@ module.exports = async function handler(req, res) {
         .replace("I accept the £79 successful-let fee and 90-day introduction protection.", "I confirm I am authorised to advertise this property and accept the NewAddy marketplace terms.")
         .replace("Private-home landlords pay £79 only after a successful NewAddy introduction becomes the tenant. Room hosts can use a free listing or buy optional Featured and Fast-Track upgrades. House swaps are free.", "Property and room listers can use free listings or buy optional Featured and Fast-Track visibility upgrades. NewAddy may also sell clearly labelled sponsored advertising. Renters and house swaps remain free.");
 
+      if (req.query.page === 'public') {
+        body = body.replace(/<section class=\"section soft\" id=\"areas\">[\s\S]*?<\/section>\s*<section class=\"section\" id=\"homes\">/, '<section class=\"section\" id=\"homes\">');
+      }
+
       if (req.query.page === 'admin' && !body.includes('__newAddyRetiredFeeActionsV10')) {
         body = body.replace('</body>', retiredAdminActions + '\n</body>');
       }
