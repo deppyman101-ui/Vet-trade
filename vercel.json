@@ -1,56 +1,17 @@
 {
   "rewrites": [
-    {
-      "source": "/join",
-      "destination": "/join.html"
-    },
-    {
-      "source": "/newaddy",
-      "destination": "/api/newaddy-page-v11?page=public"
-    },
-    {
-      "source": "/newaddy/",
-      "destination": "/api/newaddy-page-v11?page=public"
-    },
-    {
-      "source": "/newaddy/admin",
-      "destination": "/api/newaddy-page-v11?page=admin"
-    },
-    {
-      "source": "/newaddy/admin/",
-      "destination": "/api/newaddy-page-v11?page=admin"
-    },
-    {
-      "source": "/newaddy/terms",
-      "destination": "/api/newaddy-legal-v2?doc=terms"
-    },
-    {
-      "source": "/newaddy/privacy",
-      "destination": "/api/newaddy-legal-v2?doc=privacy"
-    },
-    {
-      "source": "/newaddy/cookies",
-      "destination": "/api/newaddy-legal-v2?doc=cookies"
-    },
-    {
-      "source": "/newaddy/contact",
-      "destination": "/api/newaddy-legal-v2?doc=contact"
-    },
-    {
-      "source": "/newaddy/complaints",
-      "destination": "/api/newaddy-legal-v2?doc=complaints"
-    },
-    {
-      "source": "/newaddy/payment",
-      "destination": "/nextkey/payment-success.html"
-    },
-    {
-      "source": "/newaddy/payment/",
-      "destination": "/nextkey/payment-success.html"
-    },
-    {
-      "source": "/newaddy/:path*",
-      "destination": "/nextkey/:path*"
-    }
+    {"source":"/join","destination":"/join.html"},
+    {"source":"/newaddy","destination":"/api/newaddy-page-v10?page=public"},
+    {"source":"/newaddy/","destination":"/api/newaddy-page-v10?page=public"},
+    {"source":"/newaddy/admin","destination":"/api/newaddy-page-v10?page=admin"},
+    {"source":"/newaddy/admin/","destination":"/api/newaddy-page-v10?page=admin"},
+    {"source":"/newaddy/terms","destination":"/api/newaddy-legal-v2?doc=terms"},
+    {"source":"/newaddy/privacy","destination":"/api/newaddy-legal-v2?doc=privacy"},
+    {"source":"/newaddy/cookies","destination":"/api/newaddy-legal-v2?doc=cookies"},
+    {"source":"/newaddy/contact","destination":"/api/newaddy-legal-v2?doc=contact"},
+    {"source":"/newaddy/complaints","destination":"/api/newaddy-legal-v2?doc=complaints"},
+    {"source":"/newaddy/payment","destination":"/nextkey/payment-success.html"},
+    {"source":"/newaddy/payment/","destination":"/nextkey/payment-success.html"},
+    {"source":"/newaddy/:path*","destination":"/nextkey/:path*"}
   ]
 }
