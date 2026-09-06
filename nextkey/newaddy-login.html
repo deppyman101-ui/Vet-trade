@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#17324d">
+<title>My NewAddy</title>
+<style>
+:root{--navy:#17324d;--navy2:#244f70;--coral:#ef6c57;--ink:#17212b;--muted:#66727d;--line:#dfe5e8;--cream:#f6f2eb;--bad:#fdebea;--ok:#e9f7ed}*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(145deg,#f6f2eb,#eef4f7);color:var(--ink)}.top{height:74px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center}.wrap{width:min(680px,calc(100% - 32px));margin:auto}.brand{font-family:Georgia,serif;font-size:31px;font-weight:700;color:var(--navy)}.brand em{font-style:normal;color:var(--coral)}.card{margin:44px auto;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 20px 58px rgba(23,50,77,.09);padding:30px}.eyebrow{font-size:11px;letter-spacing:.9px;font-weight:900;text-transform:uppercase;color:var(--coral)}h1,h2{font-family:Georgia,serif;color:var(--navy)}h1{font-size:42px;line-height:1.05;margin:8px 0 12px}.muted{color:var(--muted);line-height:1.6}.launch{background:var(--navy);color:#fff;border-radius:16px;padding:16px 18px;margin:18px 0}.launch b{display:block;font-size:18px}.launch span{display:block;margin-top:4px;color:#d9e4eb;font-size:12px}.field{display:grid;gap:7px;margin:14px 0}.field label{font-size:12px;font-weight:850;color:#43535e}.field input{width:100%;border:1px solid #ccd6dc;border-radius:12px;padding:13px 14px;font:inherit;outline:0}.field input:focus{border-color:#7390a4;box-shadow:0 0 0 4px rgba(23,50,77,.08)}.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:50px;border:0;border-radius:12px;padding:0 18px;font:inherit;font-weight:900;text-decoration:none;cursor:pointer}.primary{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff}.secondary{background:#eef3f6;color:var(--navy);border:1px solid #d9e3e8}.admin{background:#fff;color:var(--navy);border:1px solid #cfd9de}.split{display:grid;gap:10px;margin-top:18px}.first{margin-top:18px;padding:15px 16px;border-radius:14px;background:#f7f4ee;border:1px solid #e6ddce;color:#635d54;font-size:12px;line-height:1.55}.first b{color:var(--navy)}.status{display:none;border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:750}.status.err{display:block;background:var(--bad);color:#87362f}.status.ok{display:block;background:var(--ok);color:#285b38}.divider{display:flex;align-items:center;gap:11px;color:#8a949b;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin:20px 0}.divider:before,.divider:after{content:"";height:1px;background:#e4e8ea;flex:1}.small{font-size:11px;text-align:center;color:var(--muted);margin-top:12px}.small a{color:var(--navy);font-weight:800}@media(max-width:600px){.card{padding:22px;margin:28px auto}h1{font-size:36px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><div class="brand">New<em>Addy</em></div></div></header>
+<main class="wrap">
+<section class="card">
+<div class="eyebrow">My NewAddy · Member account</div>
+<h1>Sign in to your account.</h1>
+<p class="muted">For renters, house-swap users, room listers and property listers. Come back here whenever you need to finish or update your NewAddy setup.</p>
+<div class="launch"><b>Early access</b><span>Full NewAddy access is expected from 15 September 2026. Until then your account only shows your own saved setup and listings.</span></div>
+<form id="loginForm">
+<div class="field"><label>Email</label><input id="email" type="email" required autocomplete="email"></div>
+<div class="field"><label>Password</label><input id="password" type="password" required autocomplete="current-password"></div>
+<button class="btn primary" type="submit">SIGN IN TO MY NEWADDY</button>
+<div id="status" class="status"></div>
+</form>
+<div class="first"><b>First time here?</b><br>You must activate your account once using the <b>SET UP MY NEWADDY ACCOUNT</b> button in your welcome email. That lets you choose your password. After that, use this page whenever you want to sign in or out.</div>
+<div class="divider">Owner access</div>
+<a class="btn admin" href="/newaddy/admin">NEWADDY OWNER / ADMIN LOGIN</a>
+<p class="small">Lost your first-time setup email? Contact <a href="mailto:NewAddy101@outlook.com?subject=NewAddy%20account%20setup%20link">NewAddy support</a> from the email address you signed up with.</p>
+</section>
+</main>
+<script>
+const SUPA='https://iymhyxheggqsewpczgjl.supabase.co',PUB='sb_publishable_Q8yb_Mw70jDkwld8YGQRRw_h-T5Rau2';
+const qs=new URLSearchParams(location.search),setup=qs.get('setup');
+if(setup){location.replace('/newaddy/account/workspace?setup='+encodeURIComponent(setup));}
+const form=document.getElementById('loginForm'),st=document.getElementById('status');
+function status(type,text){st.className='status '+type;st.textContent=text}
+function saveSession(d){localStorage.setItem('na_access',d.access_token);localStorage.setItem('na_refresh',d.refresh_token);localStorage.setItem('na_expires',String(Date.now()+Number(d.expires_in||3600)*1000))}
+form.addEventListener('submit',async e=>{e.preventDefault();const b=form.querySelector('button'),email=document.getElementById('email').value.trim(),password=document.getElementById('password').value;b.disabled=true;b.textContent='SIGNING IN…';st.className='status';try{const r=await fetch(SUPA+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:PUB,'Content-Type':'application/json'},body:JSON.stringify({email,password})}),d=await r.json();if(!r.ok)throw new Error('Sign-in failed. If this is your first visit, activate your account from the welcome email first. If you are the NewAddy owner, use the Admin Login button below.');saveSession(d);status('ok','Signed in. Opening your account…');location.href='/newaddy/account/workspace'}catch(err){status('err',err.message||'Could not sign in.')}finally{b.disabled=false;b.textContent='SIGN IN TO MY NEWADDY'}});
+</script>
+</body>
+</html>
