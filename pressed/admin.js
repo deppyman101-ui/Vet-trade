@@ -1,7 +1,7 @@
 (()=>{
 const SUPA='https://iymhyxheggqsewpczgjl.supabase.co',KEY='sb_publishable_Q8yb_Mw70jDkwld8YGQRRw_h-T5Rau2',AUTH='pressed_admin_auth_v1';
 const stages=['Booking requested','Confirmed','Collected','Pressing','Ready for return','Completed','Cancelled'];
-const $=(s,r=document)=>r.querySelector(s),qsa=(s,r=document)=>[...r.querySelectorAll(s)],esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#039;'}[m])),money=n=>'£'+Number(n||0).toFixed(2);
+const $=(s,r=document)=>r.querySelector(s),qsa=(s,r=document)=>[...r.querySelectorAll(s)],esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])),money=n=>'£'+Number(n||0).toFixed(2);
 let cache=[];
 const getAuth=()=>{try{return JSON.parse(localStorage.getItem(AUTH)||'null')}catch(e){return null}};
 function saveAuth(d){const s=d?.session||d;if(!s?.access_token)return null;const x={access_token:s.access_token,refresh_token:s.refresh_token||'',user:d.user||s.user||null};localStorage.setItem(AUTH,JSON.stringify(x));return x}
