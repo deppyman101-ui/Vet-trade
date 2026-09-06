@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {"source":"/join","destination":"/join.html"},
+    {"source":"/pressed","destination":"/pressed/index.html"},
+    {"source":"/pressed/","destination":"/pressed/index.html"},
+    {"source":"/pressed/account","destination":"/pressed/account.html"},
+    {"source":"/pressed/account/","destination":"/pressed/account.html"},
     {"source":"/newaddy","destination":"/api/newaddy-page-v10?page=public"},
     {"source":"/newaddy/","destination":"/api/newaddy-page-v10?page=public"},
     {"source":"/newaddy/admin","destination":"/api/newaddy-page-v10?page=admin"},
