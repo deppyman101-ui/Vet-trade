@@ -5,6 +5,8 @@
     {"source":"/pressed/","destination":"/pressed/index.html"},
     {"source":"/pressed/account","destination":"/pressed/account.html"},
     {"source":"/pressed/account/","destination":"/pressed/account.html"},
+    {"source":"/pressed/admin","destination":"/pressed/admin.html"},
+    {"source":"/pressed/admin/","destination":"/pressed/admin.html"},
     {"source":"/newaddy","destination":"/api/newaddy-page-v10?page=public"},
     {"source":"/newaddy/","destination":"/api/newaddy-page-v10?page=public"},
     {"source":"/newaddy/admin","destination":"/api/newaddy-page-v10?page=admin"},
