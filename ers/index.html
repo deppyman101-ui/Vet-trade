@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Estate Response Services | Probate Property, Contents & Estate Support</title>
+  <meta name="description" content="Practical, respectful support for executors, families and professional referrers dealing with probate properties, contents, clearance and property preparation." />
+  <meta name="theme-color" content="#0D1B2A" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{
+      --navy:#0D1B2A;
+      --navy-2:#15283b;
+      --sage:#6B8F71;
+      --sage-dark:#58785e;
+      --stone:#D9D2C3;
+      --cream:#F7F4EE;
+      --soft:#F2F4F5;
+      --white:#FFFFFF;
+      --ink:#18222c;
+      --muted:#66727d;
+      --gold:#c9b47c;
+      --shadow:0 20px 55px rgba(13,27,42,.13);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:'Montserrat',sans-serif;color:var(--ink);background:var(--white);line-height:1.65}
+    body.menu-open{overflow:hidden}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    button,input,select,textarea{font:inherit}
+    .wrap{width:min(1160px,calc(100% - 40px));margin:auto}
+    .eyebrow{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--sage)}
+    h1,h2,h3,.serif{font-family:'Playfair Display',serif;color:var(--navy);line-height:1.12;margin-top:0}
+    h1{font-size:clamp(2.65rem,6vw,5.5rem);letter-spacing:-.035em;margin-bottom:22px}
+    h2{font-size:clamp(2rem,4vw,3.4rem);letter-spacing:-.02em;margin-bottom:18px}
+    h3{font-size:1.45rem;margin-bottom:9px}
+    p{margin:0 0 18px}
+    .lead{font-size:clamp(1.05rem,1.4vw,1.22rem);max-width:720px;color:#e7ecf0}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 22px;border-radius:999px;border:1px solid transparent;font-weight:700;cursor:pointer;transition:.2s ease}
+    .btn-primary{background:var(--sage);color:var(--white)}
+    .btn-primary:hover{background:var(--sage-dark);transform:translateY(-1px)}
+    .btn-outline{border-color:rgba(255,255,255,.45);color:var(--white);background:transparent}
+    .btn-outline:hover{background:rgba(255,255,255,.08)}
+    .btn-light{background:var(--white);color:var(--navy)}
+    .btn-full{width:100%}
+
+    header{position:sticky;top:0;z-index:50;background:rgba(13,27,42,.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.08)}
+    .nav{height:82px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:12px;color:var(--white);min-width:250px}
+    .brand-mark{position:relative;width:58px;height:58px;display:grid;place-items:center;border:1px solid rgba(217,210,195,.45);border-radius:50%;font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:700;color:#f4ecdd}
+    .brand-mark:before{content:"";position:absolute;width:25px;height:18px;border-left:2px solid var(--sage);border-top:2px solid var(--sage);transform:rotate(45deg);top:8px;border-radius:2px}
+    .brand-mark:after{content:"";position:absolute;width:5px;height:20px;background:var(--sage);border-radius:4px;left:27px;top:23px;box-shadow:7px 11px 0 -1px var(--sage)}
+    .brand-text strong{font-family:'Playfair Display',serif;font-size:1.01rem;display:block;letter-spacing:.035em}
+    .brand-text small{display:block;font-size:.58rem;letter-spacing:.13em;color:#cfd6db;text-transform:uppercase;margin-top:2px}
+    nav{display:flex;align-items:center;gap:24px;color:#edf1f4;font-size:.88rem;font-weight:600}
+    nav a:hover{color:#b8cdbd}
+    .nav-cta{padding:11px 16px;border-radius:999px;background:var(--sage);color:white}
+    .menu{display:none;background:none;border:0;color:white;font-size:1.6rem}
+
+    .hero{position:relative;overflow:hidden;background:var(--navy);min-height:690px;display:flex;align-items:center}
+    .hero:before{content:"";position:absolute;inset:-20% -5% auto auto;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(107,143,113,.28),rgba(107,143,113,0) 68%)}
+    .hero:after{content:"";position:absolute;right:7%;bottom:-40px;width:370px;height:460px;border:1px solid rgba(217,210,195,.16);border-radius:190px 190px 0 0;background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.01));box-shadow:inset 0 0 0 18px rgba(255,255,255,.02)}
+    .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:center;padding:96px 0}
+    .hero h1{color:#f4ecdd;max-width:760px}
+    .hero h1 span{color:#93ad98}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+    .hero-note{display:flex;gap:24px;flex-wrap:wrap;margin-top:35px;color:#c9d1d7;font-size:.88rem}
+    .hero-note span{display:flex;align-items:center;gap:8px}
+    .hero-note i{width:8px;height:8px;background:var(--sage);border-radius:50%;display:inline-block}
+    .hero-card{position:relative;z-index:3;background:rgba(247,244,238,.97);border-radius:30px;padding:36px;box-shadow:var(--shadow);border:1px solid rgba(217,210,195,.75)}
+    .hero-card .price{font-family:'Playfair Display',serif;font-size:3.6rem;line-height:1;color:var(--navy);margin:8px 0 13px}
+    .hero-card ul{list-style:none;padding:0;margin:20px 0 24px}
+    .hero-card li{padding:9px 0 9px 29px;position:relative;border-bottom:1px solid #e5e1d9}
+    .hero-card li:before{content:"✓";position:absolute;left:0;color:var(--sage);font-weight:800}
+    .hero-card small{display:block;color:var(--muted);font-size:.77rem;margin-top:12px}
+
+    .promise{background:var(--sage);color:white}
+    .promise .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:45px;align-items:center;padding:34px 0}
+    .promise strong{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:600}
+    .promise blockquote{margin:0;padding-left:28px;border-left:1px solid rgba(255,255,255,.5);font-family:'Playfair Display',serif;font-style:italic;font-size:1.25rem;color:#eff5f0}
+
+    section{padding:95px 0}
+    .intro-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:80px;align-items:start}
+    .intro-copy{position:sticky;top:120px}
+    .service-list{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .service-item{padding:24px;border-radius:18px;background:var(--soft);border:1px solid #e6e9eb;min-height:160px}
+    .icon{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:#dfe8e1;color:var(--sage-dark);font-weight:800;margin-bottom:15px}
+    .service-item p{font-size:.91rem;color:var(--muted);margin-bottom:0}
+
+    .who{background:var(--cream)}
+    .center{text-align:center}.center .sub{max-width:710px;margin:0 auto 45px;color:var(--muted)}
+    .audience{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .audience-card{background:white;border:1px solid #e7e1d6;padding:28px 22px;border-radius:18px;box-shadow:0 9px 28px rgba(13,27,42,.05)}
+    .audience-card p{font-size:.9rem;color:var(--muted);margin:0}
+
+    .process{background:var(--navy);color:white}
+    .process h2{color:#f6efe1}
+    .process .sub{color:#bfc9d0;max-width:700px}
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:42px}
+    .step{padding:26px 22px;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:rgba(255,255,255,.035)}
+    .step-no{font-family:'Playfair Display',serif;font-size:2.5rem;color:#8baa91;line-height:1;margin-bottom:18px}
+    .step h3{color:white;font-size:1.25rem}
+    .step p{color:#bdc8cf;font-size:.9rem;margin:0}
+
+    .packages{background:white}
+    .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:42px}
+    .price-card{border:1px solid #e2e5e7;border-radius:22px;padding:30px;position:relative;background:white}
+    .price-card.featured{background:var(--navy);color:white;border-color:var(--navy);transform:translateY(-7px);box-shadow:var(--shadow)}
+    .price-card.featured h3{color:white}
+    .price-card .tag{display:inline-block;border-radius:999px;padding:5px 10px;background:#e3ebe4;color:var(--sage-dark);font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:18px}
+    .price-card.featured .tag{background:rgba(107,143,113,.23);color:#bcd0c0}
+    .price-card .big{font-family:'Playfair Display',serif;color:var(--navy);font-size:2.1rem;margin:12px 0 16px}
+    .price-card.featured .big{color:#f5edde}
+    .price-card p,.price-card li{font-size:.88rem;color:var(--muted)}
+    .price-card.featured p,.price-card.featured li{color:#c5cfd5}
+    .price-card ul{padding-left:18px;margin-bottom:0}
+    .price-note{margin-top:22px;color:var(--muted);font-size:.82rem}
+
+    .boundaries{background:var(--soft)}
+    .boundary-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .boundary{background:white;border-radius:20px;padding:30px;border:1px solid #e1e5e7}
+    .boundary ul{margin:14px 0 0;padding-left:20px;color:var(--muted);font-size:.92rem}
+    .boundary li{margin:8px 0}
+
+    .assessment{background:var(--cream)}
+    .assessment-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:60px;align-items:start}
+    .contact-panel{background:var(--navy);color:white;padding:34px;border-radius:24px;position:sticky;top:120px}
+    .contact-panel h2,.contact-panel h3{color:#f4ecdd}
+    .contact-panel p{color:#cad2d8}
+    .contact-detail{padding:14px 0;border-top:1px solid rgba(255,255,255,.12)}
+    .contact-detail small{display:block;color:#8fa5b4;text-transform:uppercase;letter-spacing:.08em;font-size:.65rem;margin-bottom:3px}
+    .contact-detail a{font-weight:700}
+    .form-card{background:white;border-radius:24px;padding:34px;box-shadow:0 18px 50px rgba(13,27,42,.08);border:1px solid #e6e0d5}
+    .form-card h3{font-size:1.9rem}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .field{display:flex;flex-direction:column;gap:7px}
+    .field.full{grid-column:1/-1}
+    label{font-size:.81rem;font-weight:700;color:#273644}
+    input,select,textarea{width:100%;border:1px solid #cfd6da;border-radius:12px;background:#fff;padding:13px 14px;outline:none;color:var(--ink)}
+    input:focus,select:focus,textarea:focus{border-color:var(--sage);box-shadow:0 0 0 3px rgba(107,143,113,.12)}
+    textarea{resize:vertical;min-height:120px}
+    .checks{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px;padding:14px;border:1px solid #dce1e3;border-radius:12px}
+    .checks label{font-weight:500;display:flex;gap:8px;align-items:flex-start}
+    .checks input{width:auto;margin-top:4px}
+    .consent{display:flex;gap:10px;align-items:flex-start;margin:20px 0}
+    .consent input{width:auto;margin-top:5px}
+    .consent label{font-weight:500;color:var(--muted);font-size:.78rem}
+    .form-note{font-size:.76rem;color:var(--muted);margin-top:12px}
+    .success,.error{display:none;margin-top:16px;padding:14px 16px;border-radius:12px;font-size:.88rem}
+    .success{background:#e5efe7;color:#2f5d38}
+    .error{background:#fbe9e8;color:#8c3431}
+    .hp{position:absolute!important;left:-9999px!important;opacity:0!important}
+
+    .faq-grid{display:grid;grid-template-columns:.75fr 1.25fr;gap:70px}
+    details{border-top:1px solid #dbe0e3;padding:19px 0}
+    details:last-child{border-bottom:1px solid #dbe0e3}
+    summary{cursor:pointer;font-weight:700;color:var(--navy);list-style:none;display:flex;justify-content:space-between;gap:15px}
+    summary:after{content:"+";font-size:1.25rem;color:var(--sage)}
+    details[open] summary:after{content:"−"}
+    details p{color:var(--muted);font-size:.91rem;margin:12px 0 0}
+
+    footer{background:#091522;color:#cad3d9;padding:55px 0 28px}
+    .footer-grid{display:grid;grid-template-columns:1.15fr .85fr .85fr;gap:50px}
+    footer h3{color:white;font-family:'Montserrat',sans-serif;font-size:.9rem;text-transform:uppercase;letter-spacing:.1em}
+    footer p,footer a{font-size:.84rem;color:#aab6bf}
+    footer a:hover{color:white}
+    .legal{margin-top:38px;padding-top:22px;border-top:1px solid rgba(255,255,255,.09);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:.72rem;color:#788793}
+    .mobile-cta{display:none}
+
+    @media(max-width:950px){
+      nav{display:none;position:fixed;inset:82px 0 auto 0;background:var(--navy);padding:24px 20px 34px;flex-direction:column;align-items:flex-start;border-top:1px solid rgba(255,255,255,.08)}
+      nav.open{display:flex}.menu{display:block}.brand{min-width:auto}.brand-text small{display:none}
+      .hero-grid,.intro-grid,.assessment-grid,.faq-grid{grid-template-columns:1fr;gap:42px}
+      .hero{min-height:auto}.hero-grid{padding:72px 0}.hero-card{max-width:560px}.intro-copy,.contact-panel{position:static}
+      .audience,.steps{grid-template-columns:1fr 1fr}.price-grid{grid-template-columns:1fr}.price-card.featured{transform:none}
+      .promise .wrap{grid-template-columns:1fr;gap:20px}.promise blockquote{padding-left:0;border-left:0}
+    }
+    @media(max-width:640px){
+      .wrap{width:min(100% - 28px,1160px)}
+      .nav{height:72px}.brand-mark{width:48px;height:48px}.brand-text strong{font-size:.9rem}
+      nav{inset:72px 0 auto 0}
+      section{padding:70px 0}.hero-grid{padding:64px 0}.hero h1{font-size:3rem}.hero-card{padding:25px;border-radius:22px}
+      .service-list,.audience,.steps,.boundary-grid,.form-grid,.checks{grid-template-columns:1fr}
+      .field.full{grid-column:auto}.assessment-grid{gap:30px}.form-card,.contact-panel{padding:24px}
+      .footer-grid{grid-template-columns:1fr;gap:24px}
+      .mobile-cta{display:block;position:fixed;left:12px;right:12px;bottom:12px;z-index:45;background:var(--sage);color:white;text-align:center;border-radius:999px;padding:14px 16px;font-weight:800;box-shadow:0 12px 35px rgba(13,27,42,.26)}
+      footer{padding-bottom:90px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#top" aria-label="Estate Response Services home">
+        <span class="brand-mark">ERS</span>
+        <span class="brand-text"><strong>Estate Response Services</strong><small>Probate property, contents & estate support</small></span>
+      </a>
+      <button class="menu" aria-label="Open menu" aria-expanded="false">☰</button>
+      <nav id="navlinks">
+        <a href="#help">How we help</a>
+        <a href="#process">Our process</a>
+        <a href="#services">Services</a>
+        <a href="#faq">FAQs</a>
+        <a class="nav-cta" href="#assessment">Request assessment</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Assess · Secure · Organise · Deliver</div>
+          <h1>Practical support. <span>Professional results.</span></h1>
+          <p class="lead">Specialist support for executors, solicitors and families dealing with probate properties and estates. One point of contact from the first property assessment through to a clear, documented handover.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#assessment">Request an assessment</a>
+            <a class="btn btn-outline" href="tel:07746339575">Call 07746 339575</a>
+          </div>
+          <div class="hero-note">
+            <span><i></i>Professional & discreet</span>
+            <span><i></i>London / Kent border</span>
+            <span><i></i>Clear client approval at every stage</span>
+          </div>
+        </div>
+        <aside class="hero-card">
+          <div class="eyebrow">Estate assessment</div>
+          <div class="price">£195</div>
+          <p>A structured property and contents visit giving you a clear picture of what needs to happen next.</p>
+          <ul>
+            <li>Property and contents overview</li>
+            <li>Potentially significant items identified</li>
+            <li>Retain / value / sell / donate / recycle / clear plan</li>
+            <li>Clear recommendations for the next stage</li>
+          </ul>
+          <a class="btn btn-primary btn-full" href="#assessment">Request your assessment</a>
+          <small>No payment is taken through this form. We confirm availability, authority and next steps with you first.</small>
+        </aside>
+      </div>
+    </section>
+
+    <div class="promise">
+      <div class="wrap">
+        <strong>We handle the practical side of an estate with care, professionalism and integrity.</strong>
+        <blockquote>“We take care of the details, so you can focus on what matters.”</blockquote>
+      </div>
+    </div>
+
+    <section id="help">
+      <div class="wrap intro-grid">
+        <div class="intro-copy">
+          <div class="eyebrow">What ERS does</div>
+          <h2>One organised point of contact.</h2>
+          <p>After a death, a property can leave an executor or family coordinating several different jobs at once. ERS manages the practical process so you do not have to source and chase every provider yourself.</p>
+          <p>We assess what is there, identify what may need specialist attention, record agreed decisions and coordinate the approved next steps.</p>
+        </div>
+        <div class="service-list">
+          <article class="service-item"><div class="icon">01</div><h3>Assessment & inventory</h3><p>Property and contents assessment, photographic records where needed and identification of significant or sensitive items.</p></article>
+          <article class="service-item"><div class="icon">02</div><h3>Valuation & sale coordination</h3><p>We coordinate suitable independent valuers, auction houses, specialist buyers or sale channels for items you authorise.</p></article>
+          <article class="service-item"><div class="icon">03</div><h3>Donation & clearance</h3><p>Approved donation, recycling and clearance are coordinated with suitable providers, with important items protected from accidental disposal.</p></article>
+          <article class="service-item"><div class="icon">04</div><h3>Property ready</h3><p>Cleaning, garden work, locksmiths, minor trade support, access information, final photographs and practical handover can be coordinated.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="who">
+      <div class="wrap center">
+        <div class="eyebrow">Who we support</div>
+        <h2>Help when the practical workload becomes too much.</h2>
+        <p class="sub">ERS is designed for people who have the responsibility for an estate property but may not have the time, local contacts or capacity to coordinate every part themselves.</p>
+        <div class="audience">
+          <article class="audience-card"><div class="icon">E</div><h3>Executors</h3><p>A structured, documented way to move the property and contents forward.</p></article>
+          <article class="audience-card"><div class="icon">F</div><h3>Families</h3><p>Practical support delivered with respect around a difficult and often emotional process.</p></article>
+          <article class="audience-card"><div class="icon">S</div><h3>Solicitors</h3><p>A practical referral option for clients who need help beyond legal probate work.</p></article>
+          <article class="audience-card"><div class="icon">P</div><h3>Professionals</h3><p>Support for authorised representatives, deputies and other appropriate professional referrers.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="process" id="process">
+      <div class="wrap">
+        <div class="eyebrow">Our simple process</div>
+        <h2>Clear authority. Clear decisions. Clear record.</h2>
+        <p class="sub">Nothing significant is sold, donated or cleared simply because it is convenient. The authorised client remains in control.</p>
+        <div class="steps">
+          <article class="step"><div class="step-no">1</div><h3>Get in touch</h3><p>Tell us about the property, your role and what support you think may be needed.</p></article>
+          <article class="step"><div class="step-no">2</div><h3>Assessment</h3><p>We visit, review the practical situation and produce a clear recommended plan.</p></article>
+          <article class="step"><div class="step-no">3</div><h3>Authorise & coordinate</h3><p>You approve important actions and third-party costs before ERS coordinates the work.</p></article>
+          <article class="step"><div class="step-no">4</div><h3>Complete & hand over</h3><p>We document the outcome and coordinate the property’s agreed next-stage handover.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="packages" id="services">
+      <div class="wrap">
+        <div class="center">
+          <div class="eyebrow">Service options</div>
+          <h2>Start with the level of help you need.</h2>
+          <p class="sub">You can begin with an assessment only. If more support is needed, ERS can coordinate the wider contents and property-ready process.</p>
+        </div>
+        <div class="price-grid">
+          <article class="price-card">
+            <span class="tag">Starting point</span>
+            <h3>Estate Assessment</h3>
+            <div class="big">£195</div>
+            <p>A structured visit and practical next-step plan.</p>
+            <ul><li>Contents overview</li><li>Potentially valuable items flagged</li><li>Recommended actions</li><li>Clear next-step plan</li></ul>
+          </article>
+          <article class="price-card featured">
+            <span class="tag">Managed service</span>
+            <h3>Contents Sale & Clearance</h3>
+            <div class="big">£495 + agreed commission</div>
+            <p>For estates needing ERS to coordinate the contents from assessment through authorised sale, donation and clearance.</p>
+            <ul><li>Assessment & inventory</li><li>Specialist valuation coordination</li><li>Authorised sale coordination</li><li>Clearance and final statement</li></ul>
+          </article>
+          <article class="price-card">
+            <span class="tag">End-to-end support</span>
+            <h3>Full Probate Property Ready</h3>
+            <div class="big">From £895</div>
+            <p>Contents coordination plus the agreed practical work required to leave the property ready for its next stage.</p>
+            <ul><li>Everything in managed contents service</li><li>Cleaning / garden coordination</li><li>Locksmith / trade support</li><li>Final photographs & handover</li></ul>
+          </article>
+        </div>
+        <p class="price-note">Third-party services such as specialist valuations, clearance, storage, cleaning, gardening, removals and trade work are quoted separately and require approval. Commission on approved contents sales is agreed in the service terms before work begins.</p>
+      </div>
+    </section>
+
+    <section class="boundaries">
+      <div class="wrap boundary-grid">
+        <article class="boundary">
+          <div class="eyebrow">What we do</div>
+          <h3>Practical estate-property coordination</h3>
+          <ul><li>Assess property contents and practical requirements</li><li>Record significant items and client decisions</li><li>Coordinate suitable independent specialists</li><li>Arrange approved sale, donation, recycling and clearance</li><li>Coordinate property-ready work and handover</li></ul>
+        </article>
+        <article class="boundary">
+          <div class="eyebrow">Important boundary</div>
+          <h3>What ERS does not replace</h3>
+          <ul><li>Legal, probate, inheritance or tax advice</li><li>Formal valuation or surveying services</li><li>Decisions about who is legally entitled to estate assets</li><li>An estate agent or auctioneer unless separately appointed through an appropriate provider</li><li>Qualified specialist work that must be carried out by an appropriate contractor</li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="assessment" id="assessment">
+      <div class="wrap assessment-grid">
+        <aside class="contact-panel">
+          <div class="eyebrow">Get in touch</div>
+          <h2>Request an estate assessment.</h2>
+          <p>Give us the basic details. We will contact you to understand the situation, confirm who has authority to instruct ERS and arrange the next step.</p>
+          <div class="contact-detail"><small>Telephone / WhatsApp</small><a href="tel:07746339575">07746 339575</a></div>
+          <div class="contact-detail"><small>Email</small><a href="mailto:hello@estateresponseservices.co.uk">hello@estateresponseservices.co.uk</a></div>
+          <div class="contact-detail"><small>Service area</small><span>London / Kent border — Bromley, Bexley, Greenwich, Lewisham, Dartford, Sevenoaks, Tonbridge & surrounding areas.</span></div>
+          <div class="contact-detail"><small>Professional referrals</small><span>Solicitors and other authorised professional referrers can use the same form and select “Solicitor / professional referrer”.</span></div>
+        </aside>
+
+        <form class="form-card" id="assessmentForm">
+          <div class="eyebrow">Assessment request</div>
+          <h3>Tell us about the property</h3>
+          <p style="color:var(--muted);font-size:.9rem">This is a request, not a commitment. No payment is taken online at this stage.</p>
+          <div class="form-grid">
+            <div class="field"><label for="full_name">Your name *</label><input id="full_name" name="full_name" required maxlength="120" autocomplete="name"></div>
+            <div class="field"><label for="capacity">Your role *</label><select id="capacity" name="capacity" required><option value="">Select...</option><option>Executor</option><option>Administrator / personal representative</option><option>Solicitor / professional referrer</option><option>Family member / beneficiary</option><option>Attorney / deputy</option><option>Other</option></select></div>
+            <div class="field"><label for="email">Email *</label><input id="email" type="email" name="email" required maxlength="254" autocomplete="email"></div>
+            <div class="field"><label for="phone">Phone / WhatsApp *</label><input id="phone" name="phone" required maxlength="40" autocomplete="tel"></div>
+            <div class="field full"><label for="organisation">Organisation (if applicable)</label><input id="organisation" name="organisation" maxlength="180"></div>
+            <div class="field full"><label for="property_address">Estate property address *</label><input id="property_address" name="property_address" required maxlength="500" autocomplete="street-address"></div>
+            <div class="field"><label for="postcode">Postcode *</label><input id="postcode" name="postcode" required maxlength="20" autocomplete="postal-code"></div>
+            <div class="field"><label for="property_status">Property status</label><select id="property_status" name="property_status"><option value="">Select...</option><option>Vacant</option><option>Occupied</option><option>Recently vacated</option><option>Access restricted / keys held elsewhere</option><option>Not sure</option></select></div>
+            <div class="field full"><label for="authority_status">Authority / probate position</label><select id="authority_status" name="authority_status"><option value="">Select the closest...</option><option>I am the executor named in the will</option><option>Grant of Probate / Letters of Administration obtained</option><option>Application is in progress</option><option>I am a solicitor / professional acting with authority</option><option>I have written authority from the personal representative</option><option>I am a family member but authority is not yet confirmed</option><option>Not sure — I need guidance on what ERS needs to see</option></select></div>
+            <div class="field full"><label>What may be needed?</label><div class="checks"><label><input type="checkbox" name="service_interest" value="Estate assessment"> Estate assessment</label><label><input type="checkbox" name="service_interest" value="Inventory / significant items"> Inventory / significant items</label><label><input type="checkbox" name="service_interest" value="Valuation / sale coordination"> Valuation / sale coordination</label><label><input type="checkbox" name="service_interest" value="Donation / recycling / clearance"> Donation / recycling / clearance</label><label><input type="checkbox" name="service_interest" value="Property ready service"> Property ready service</label><label><input type="checkbox" name="service_interest" value="Not sure"> Not sure — please advise</label></div></div>
+            <div class="field"><label for="preferred_contact">Preferred contact *</label><select id="preferred_contact" name="preferred_contact" required><option>Phone</option><option>Email</option><option>WhatsApp</option></select></div>
+            <div class="field"><label for="timeframe">Timeframe</label><select id="timeframe" name="timeframe"><option value="">Select...</option><option>As soon as possible</option><option>Within 1–2 weeks</option><option>Within a month</option><option>No fixed deadline</option><option>Not sure</option></select></div>
+            <div class="field full"><label for="notes">Anything we should know?</label><textarea id="notes" name="notes" maxlength="3000" placeholder="For example: current condition, amount of contents, access issues, known valuable or sentimental items, distance from the property, or a target handover date."></textarea></div>
+            <div class="field hp" aria-hidden="true"><label for="company_website">Leave blank</label><input id="company_website" name="company_website" tabindex="-1" autocomplete="off"></div>
+          </div>
+          <div class="consent"><input type="checkbox" id="privacy_consent" required><label for="privacy_consent">I agree that ERS may use the information I provide to respond to this request and manage the enquiry. I understand ERS may need evidence of authority before taking substantive action relating to estate assets or the property.</label></div>
+          <button class="btn btn-primary btn-full" id="submitBtn" type="submit">Send assessment request</button>
+          <div class="success" id="successMsg">Thank you. Your assessment request has been received. ERS will contact you using your preferred method to discuss the next step.</div>
+          <div class="error" id="errorMsg">We could not send the request just now. Please call 07746 339575 or email hello@estateresponseservices.co.uk.</div>
+          <p class="form-note">Please do not include bank details, passwords or unnecessary sensitive information in the notes box.</p>
+        </form>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="wrap faq-grid">
+        <div><div class="eyebrow">Common questions</div><h2>Before you instruct ERS.</h2><p style="color:var(--muted)">If you are unsure whether your situation fits, request an assessment and we can establish what ERS can appropriately help with.</p></div>
+        <div>
+          <details><summary>Do I need Grant of Probate before contacting ERS?</summary><p>No. You can contact ERS earlier. However, the authority required depends on what you want us to do. We may be able to assess and plan before some later actions are authorised, but sale, donation, disposal or other substantive decisions require appropriate authority.</p></details>
+          <details><summary>Will ERS just clear everything from the property?</summary><p>No. A key part of the model is separating the assessment from disposal. Potentially significant, sentimental or disputed items can be recorded and held for a client decision before authorised clearance takes place.</p></details>
+          <details><summary>Does ERS value antiques or specialist items?</summary><p>ERS identifies items that may warrant specialist attention and coordinates appropriate independent valuers, auction houses or specialist buyers where required. ERS itself does not provide formal probate valuation advice.</p></details>
+          <details><summary>Who pays third-party contractors?</summary><p>Third-party costs are normally quoted separately and approved before commitment. The intended operating model is for contractors or specialist providers to invoice the estate or authorised client directly where appropriate, with ERS coordinating and recording the work.</p></details>
+          <details><summary>Can a solicitor refer a client directly?</summary><p>Yes. Solicitors and other appropriate professional referrers can introduce an executor or authorised representative to ERS. The client remains in control of the practical instructions and approvals.</p></details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div><a class="brand" href="#top"><span class="brand-mark">ERS</span><span class="brand-text"><strong>Estate Response Services</strong><small>Probate property, contents & estate support</small></span></a><p style="margin-top:18px;max-width:520px">Professional. Respectful. Organised. Dependable. Discreet. Practical estate-property support for executors, families and professional referrers.</p></div>
+        <div><h3>Contact</h3><p><a href="tel:07746339575">07746 339575</a></p><p><a href="mailto:hello@estateresponseservices.co.uk">hello@estateresponseservices.co.uk</a></p><p>London / Kent border</p></div>
+        <div><h3>Quick links</h3><p><a href="#help">How we help</a></p><p><a href="#services">Services</a></p><p><a href="#assessment">Request assessment</a></p><p><a href="#faq">FAQs</a></p></div>
+      </div>
+      <div class="legal"><span>© <span id="year"></span> Estate Response Services. All rights reserved.</span><span>ERS provides practical estate-property coordination and does not provide legal, tax, probate, surveying or formal valuation advice.</span></div>
+    </div>
+  </footer>
+
+  <a class="mobile-cta" href="#assessment">Request assessment · £195</a>
+
+  <script>
+    const menu = document.querySelector('.menu');
+    const nav = document.querySelector('nav');
+    menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));document.body.classList.toggle('menu-open',open)});
+    nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false');document.body.classList.remove('menu-open')}));
+    document.getElementById('year').textContent=new Date().getFullYear();
+
+    const SUPABASE_URL='https://iymhyxheggqsewpczgjl.supabase.co';
+    const SUPABASE_KEY='sb_publishable_Q8yb_Mw70jDkwld8YGQRRw_h-T5Rau2';
+    const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
+    const form=document.getElementById('assessmentForm');
+    const submitBtn=document.getElementById('submitBtn');
+    const success=document.getElementById('successMsg');
+    const error=document.getElementById('errorMsg');
+
+    form.addEventListener('submit',async(e)=>{
+      e.preventDefault();
+      success.style.display='none'; error.style.display='none';
+      if(document.getElementById('company_website').value) return;
+      submitBtn.disabled=true;submitBtn.textContent='Sending…';
+      const fd=new FormData(form);
+      const services=[...form.querySelectorAll('input[name="service_interest"]:checked')].map(x=>x.value);
+      const payload={
+        full_name:String(fd.get('full_name')||'').trim(),
+        email:String(fd.get('email')||'').trim(),
+        phone:String(fd.get('phone')||'').trim(),
+        capacity:String(fd.get('capacity')||''),
+        organisation:String(fd.get('organisation')||'').trim()||null,
+        property_address:String(fd.get('property_address')||'').trim(),
+        postcode:String(fd.get('postcode')||'').trim(),
+        property_status:String(fd.get('property_status')||'')||null,
+        authority_status:String(fd.get('authority_status')||'')||null,
+        service_interest:services,
+        preferred_contact:String(fd.get('preferred_contact')||'Phone'),
+        timeframe:String(fd.get('timeframe')||'')||null,
+        notes:String(fd.get('notes')||'').trim()||null,
+        privacy_consent:document.getElementById('privacy_consent').checked,
+        source:'website'
+      };
+      const {error:insertError}=await db.from('ers_assessment_requests').insert(payload);
+      if(insertError){console.error(insertError);error.style.display='block'}
+      else{success.style.display='block';form.reset();success.scrollIntoView({behavior:'smooth',block:'center'})}
+      submitBtn.disabled=false;submitBtn.textContent='Send assessment request';
+    });
+  </script>
+</body>
+</html>
