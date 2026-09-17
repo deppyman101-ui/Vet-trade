@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {"source":"/join","destination":"/join.html"},
+    {"source":"/wastepilot","destination":"/wastepilot/index.html"},
+    {"source":"/wastepilot/","destination":"/wastepilot/index.html"},
+    {"source":"/wastepilot/admin","destination":"/wastepilot-admin.html"},
+    {"source":"/wastepilot/admin/","destination":"/wastepilot-admin.html"},
     {"source":"/pressed","destination":"/pressed/index.html"},
     {"source":"/pressed/","destination":"/pressed/index.html"},
     {"source":"/pressed/account","destination":"/pressed/account.html"},
